@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MommynMe Crochet | Home</title>
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar__logo-link"><img src="assets/icons/logo.jpeg" alt="MommynMe Logo" class="navbar__logo"></a>
+    <div class="navbar__links">
+      <a href="index.html" class="navbar__link">Home</a>
+      <a href="products.html" class="navbar__link">Products</a>
+      <a href="#about" class="navbar__link">About Us</a>
+      <a href="#contact" class="navbar__link">Contact Us</a>
+      <a href="cart.html" class="navbar__cart"><img src="assets/icons/cart.png" alt="Cart" class="navbar__cart-icon"></a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero__bg">
+      <div class="hero__overlay"></div>
+      <!-- Images will be set via JS as background-image -->
+    </div>
+    <div class="hero__content">
+      <h1 class="hero__title">Handcrafted Crochet Creations</h1>
+      <p class="hero__subtitle">Unique, cozy, and made with love by MommynMe</p>
+      <div class="hero__buttons">
+        <button class="button hero__button" data-target="categories">View Products</button>
+        <button class="button hero__button" data-target="about">About Us</button>
+        <button class="button hero__button" data-target="contact">Contact Us</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Previews -->
+  <section class="categories" id="categories">
+    <h2 class="about__title" style="text-align:center;">Explore Our Crochet Categories</h2>
+    <h3 class="section-tagline">Find the perfect handmade piece for every mood and moment</h3>
+    <div class="category-card">
+      <img src="assets/images/hero1.jpg" alt="Super Heroes" class="category-card__icon">
+      <div class="category-card__name">Super Heroes</div>
+      <div class="category-card__tagline">For the little heroes in your life</div>
+    </div>
+    <div class="category-card">
+      <img src="assets/icons/poster.svg" alt="Posters" class="category-card__icon">
+      <div class="category-card__name">Posters</div>
+      <div class="category-card__tagline">Art for your walls, handmade with love</div>
+    </div>
+    <div class="category-card">
+      <img src="assets/icons/claw.svg" alt="Mini Claw" class="category-card__icon">
+      <div class="category-card__name">Mini Claw</div>
+      <div class="category-card__tagline">Cute, colorful, and always handy</div>
+    </div>
+    <div class="category-card">
+      <img src="assets/icons/keychain.svg" alt="Keychain" class="category-card__icon">
+      <div class="category-card__name">Keychain</div>
+      <div class="category-card__tagline">Carry a touch of crochet everywhere</div>
+    </div>
+    <div class="category-card">
+      <img src="assets/icons/flower.svg" alt="Flower Bouquets" class="category-card__icon">
+      <div class="category-card__name">Flower Bouquets</div>
+      <div class="category-card__tagline">Blooms that last forever</div>
+    </div>
+    <!-- Add more categories as needed -->
+  </section>
+
+  <!-- About Us -->
+  <section class="about" id="about">
+    <h2 class="section-tagline">Who We Are</h2>
+    <h2 class="about__title">About MommynMe</h2>
+    <div class="about__content">
+      <div class="about__slider">
+        <img src="assets/images/about1.jpeg" class="about__img" alt="About MommynMe 1">
+        <img src="assets/images/about2.jpeg" class="about__img" alt="About MommynMe 2" >
+        <img src="assets/images/about3.jpeg" class="about__img" alt="About MommynMe 3" >
+      </div>
+      <div class="about__desc-wrapper">
+        <p class="about__desc">
+          MommynMe is more than just a crochet business—it's a celebration of creativity, tradition, and the joy of handmade artistry. Founded by a passionate mother-daughter duo, every piece is crafted with love, patience, and a keen eye for detail. Our journey began with a single skein of yarn and a dream to bring warmth and happiness into every home.<br><br>
+          From whimsical superheroes to elegant bouquets, our collection is a blend of playful imagination and timeless elegance. We believe in the magic of slow, mindful creation and the stories woven into every stitch. Whether you're searching for a unique gift or a cozy keepsake, MommynMe is here to make your moments special.<br><br>
+          Join us as we continue to spread smiles, one crochet masterpiece at a time.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured In Section -->
+  <section class="featured" id="featured">
+    <h2 class="about__title" style="text-align:center;">Featured In</h2>
+    <h3 class="section-tagline">See where MommynMe has been celebrated and recognized</h3>
+    <div class="featured-cards-nav">
+      <button class="featured-arrow featured-arrow--left" aria-label="Previous">&#8592;</button>
+      <div class="featured-cards"></div>
+      <button class="featured-arrow featured-arrow--right" aria-label="Next">&#8594;</button>
+    </div>
+    <div class="featured-pagination"></div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <h2 class="about__title" style="text-align:center;">Get in Touch</h2>
+    <h3 class="section-tagline">We'd love to hear from you! Send us a message or find us on the map below.</h3>
+    <div class="contact__card">
+      <form class="contact__form">
+        <div class="contact__form-title">Contact Us</div>
+        <div class="contact__input-group">
+          <span class="contact__icon"><img src="assets/icons/user.svg" alt="Name"></span>
+          <input type="text" name="name" class="contact__input" placeholder="Your Name" required>
+        </div>
+        <div class="contact__input-group">
+          <span class="contact__icon"><img src="assets/icons/email.svg" alt="Email"></span>
+          <input type="email" name="email" class="contact__input" placeholder="Your Email" required>
+        </div>
+        <div class="contact__input-group">
+          <span class="contact__icon"><img src="assets/icons/message.svg" alt="Message"></span>
+          <textarea name="message" class="contact__textarea" placeholder="Your Message" required></textarea>
+        </div>
+        <button type="submit" class="button contact__button"><span>Send Message</span> <img src="assets/icons/send.svg" alt="Send" class="contact__button-icon"></button>
+      </form>
+      <div class="contact__divider"></div>
+      <div class="contact__map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019123456789!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c1234567%3A0xabcdef1234567890!2sBangalore!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <img src="assets/logo.png" alt="MommynMe Logo" class="footer__logo">
+        <div class="footer__brand-text">
+          <span class="footer__title">MommynMe</span>
+          <span class="footer__tagline">Handcrafted Crochet Creations with Love</span>
+        </div>
+      </div>
+      <div class="footer__divider"></div>
+      <div class="footer__nav-col">
+        <div class="footer__section-title">Navigation</div>
+        <nav class="footer__nav">
+          <a href="#home" class="footer__link">Home</a>
+          <a href="#products" class="footer__link">Products</a>
+          <a href="#contact" class="footer__link">Categories</a>
+          <a href="#about" class="footer__link">About</a>
+          <a href="#contact" class="footer__link">Contact</a>
+          <a href="#cart" class="footer__link">Cart</a>
+        </nav>
+      </div>
+      <div class="footer__divider"></div>
+      <div class="footer__social-newsletter-col">
+        <div class="footer__section-title">Connect</div>
+        <div class="footer__social">
+          <a href="https://instagram.com" target="_blank" class="footer__social-link" aria-label="Instagram"><img src="assets/icons/instagram.svg" alt="Instagram"></a>
+          <a href="https://facebook.com" target="_blank" class="footer__social-link" aria-label="Facebook"><img src="assets/icons/facebook.svg" alt="Facebook"></a>
+          <a href="https://wa.me/" target="_blank" class="footer__social-link" aria-label="WhatsApp"><img src="assets/icons/whatsapp.svg" alt="WhatsApp"></a>
+        </div>
+        <form class="footer__newsletter" autocomplete="off">
+          <label for="newsletter-email" class="footer__newsletter-label">Subscribe to our newsletter</label>
+          <div class="footer__newsletter-group">
+            <input type="email" id="newsletter-email" class="footer__newsletter-input" placeholder="Your Email" required>
+            <button type="submit" class="footer__newsletter-button" aria-label="Subscribe">
+              <img src="assets/icons/send.svg" alt="Subscribe">
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>&copy; 2024 MommynMe. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="js/index.js"></script>
+</body>
+</html> 
