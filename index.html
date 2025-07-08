@@ -71,7 +71,7 @@
     <h3 class="section-tagline">See where MommynMe has been celebrated and recognized</h3>
     <div class="featured-cards-nav">
       <button class="featured-arrow featured-arrow--left" aria-label="Previous">&#8592;</button>
-      <div class="featured-cards"></div>
+      <div class="featured-cards" id="featuredCards"></div>
       <button class="featured-arrow featured-arrow--right" aria-label="Next">&#8594;</button>
     </div>
     <div class="featured-pagination"></div>
@@ -214,9 +214,29 @@
         container.appendChild(a);
       });
     }
+    async function loadFeaturedUpdates() {
+      const res = await fetch('http://localhost:5000/featured/featured-updates');
+      if (!res.ok) return;
+      const updates = await res.json();
+      const container = document.getElementById('featuredCards');
+      container.innerHTML = '';
+      updates.forEach(u => {
+        const div = document.createElement('div');
+        div.className = 'featured-card';
+        div.innerHTML = `
+          <div class="featured-card__img"><img src="http://localhost:5000/static/uploads/featured/${u.image}" alt="${u.title}"></div>
+          <div class="featured-card__content">
+            <div class="featured-card__title">${u.title}</div>
+            <div class="featured-card__desc">${u.description}</div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
     document.addEventListener('DOMContentLoaded', function() {
       loadReviews();
       loadCategories();
+      loadFeaturedUpdates();
     });
   </script>
 </body>
