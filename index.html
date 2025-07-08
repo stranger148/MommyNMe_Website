@@ -45,6 +45,12 @@
     <div class="categories-list" id="categoriesList"></div>
   </section>
 
+  <!-- Featured Premium Products Section -->
+  <section class="premium-products" id="premiumProducts">
+    <h2 class="about__title" style="text-align:center;">Our Featured Premium Products</h2>
+    <div class="premium-products-list" id="premiumProductsList"></div>
+  </section>
+
   <!-- About Us -->
   <section class="about" id="about">
     <h2 class="section-tagline">Who We Are</h2>
@@ -233,10 +239,32 @@
         container.appendChild(div);
       });
     }
+    async function loadPremiumProducts() {
+      const res = await fetch('http://localhost:5000/product/products/latest');
+      if (!res.ok) return;
+      const products = await res.json();
+      const container = document.getElementById('premiumProductsList');
+      container.innerHTML = '';
+      products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'premium-product-card';
+        div.innerHTML = `
+          <div class="premium-product-img"><img src="http://localhost:5000/${p.image1 || ''}" alt="${p.name}"></div>
+          <div class="premium-product-content">
+            <div class="premium-product-title">${p.name}</div>
+            <div class="premium-product-desc">${p.description || ''}</div>
+            <div class="premium-product-price">₹${p.price}</div>
+            <a href="products.html" class="premium-product-btn">Explore Now</a>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
     document.addEventListener('DOMContentLoaded', function() {
       loadReviews();
       loadCategories();
       loadFeaturedUpdates();
+      loadPremiumProducts();
     });
   </script>
 </body>
