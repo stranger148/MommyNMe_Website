@@ -1,58 +1,50 @@
 // MommynMe - products.js
 
-// Product data (sample, can be extended)
-const PRODUCTS = [
-  {
-    id: 'hero-doll',
-    name: 'Super Hero Doll',
-    category: 'Super Heroes',
-    price: 499,
-    shortDesc: 'Handcrafted superhero crochet doll.',
-    fullDesc: 'A unique, soft, and safe superhero doll, perfect for kids and collectors. Made with premium yarn.',
-    delivery: '3-5 days',
-    img: 'assets/images/hero1.jpg',
-  },
-  {
-    id: 'flower-bouquet',
-    name: 'Flower Bouquet',
-    category: 'Flower Bouquets',
-    price: 699,
-    shortDesc: 'Elegant crochet flower bouquet.',
-    fullDesc: 'A beautiful bouquet of crochet flowers, everlasting and perfect for gifting or decor.',
-    delivery: '4-6 days',
-    img: 'assets/products/flower-bouquet.jpg',
-  },
-  {
-    id: 'mini-claw',
-    name: 'Mini Claw',
-    category: 'Mini Claw',
-    price: 199,
-    shortDesc: 'Cute mini crochet claw.',
-    fullDesc: 'Adorable mini claw, perfect for hair or as a keychain. Soft, durable, and stylish.',
-    delivery: '2-4 days',
-    img: 'assets/products/mini-claw.jpg',
-  },
-  // Add more products as needed
-];
+let CATEGORIES = [];
+let PRODUCTS = [];
 
-const CATEGORIES = [
-  'Super Heroes', 'Posters', 'Mini Claw', 'Medium Claw', 'Keychain',
-  'Hair Ties', 'Flower Pots', 'Flower Bouquets', 'Crochet Bows', 'Coasters', 'Big Claws'
-];
+// Fetch categories from backend
+async function fetchCategories() {
+  const res = await fetch('http://localhost:5000/category/categories');
+  if (!res.ok) return [];
+  return await res.json();
+}
+
+// Fetch products by category from backend
+async function fetchProducts(categoryId = null) {
+  let url = 'http://localhost:5000/product/products';
+  if (categoryId) url += `?category_id=${categoryId}`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  return await res.json();
+}
 
 // Render filter categories
-function renderCategories() {
+async function renderCategories() {
   const container = document.querySelector('.filter__categories');
   container.innerHTML = '';
+  CATEGORIES = await fetchCategories();
+  // Add 'All' button
+  const allBtn = document.createElement('button');
+  allBtn.className = 'filter__category filter__category--active';
+  allBtn.textContent = 'All';
+  allBtn.setAttribute('data-category', 'all');
+  allBtn.addEventListener('click', async () => {
+    document.querySelectorAll('.filter__category').forEach(b => b.classList.remove('filter__category--active'));
+    allBtn.classList.add('filter__category--active');
+    await renderProducts();
+  });
+  container.appendChild(allBtn);
+  // Add category buttons
   CATEGORIES.forEach(cat => {
     const btn = document.createElement('button');
     btn.className = 'filter__category';
-    btn.textContent = cat;
-    btn.setAttribute('data-category', cat);
-    btn.addEventListener('click', () => {
+    btn.textContent = cat.name;
+    btn.setAttribute('data-category', cat.id);
+    btn.addEventListener('click', async () => {
       document.querySelectorAll('.filter__category').forEach(b => b.classList.remove('filter__category--active'));
       btn.classList.add('filter__category--active');
-      renderProducts(cat);
+      await renderProducts(cat.id);
     });
     container.appendChild(btn);
   });
@@ -64,33 +56,36 @@ function showProductsLoading(show) {
   if (spinner) spinner.style.display = show ? 'flex' : 'none';
 }
 
-// Wrap renderProducts to show spinner
-const _renderProducts = renderProducts;
-renderProducts = function(category) {
-  showProductsLoading(true);
-  setTimeout(() => {
-    _renderProducts(category);
-    showProductsLoading(false);
-  }, 400); // Simulate loading
-};
+// Helper to get full image URL from backend
+function getImageUrl(path) {
+  if (!path) return 'assets/images/hero1.jpg'; // fallback
+  if (path.startsWith('/static/')) {
+    return 'http://localhost:5000' + path;
+  }
+  return path;
+}
 
 // Render products by category
-function renderProducts(category) {
+async function renderProducts(categoryId = null) {
+  showProductsLoading(true);
+  PRODUCTS = await fetchProducts(categoryId && categoryId !== 'all' ? categoryId : null);
   const grid = document.querySelector('.products');
   grid.innerHTML = '';
-  const filtered = category ? PRODUCTS.filter(p => p.category === category) : PRODUCTS;
-  if (filtered.length === 0) {
+  if (!PRODUCTS.length) {
     grid.innerHTML = '<div style="padding:2rem;">No products found in this category.</div>';
+    showProductsLoading(false);
     return;
   }
-  filtered.forEach(product => {
+  PRODUCTS.forEach(product => {
+    // Use the first available image
+    let img = getImageUrl(product.image1) || getImageUrl(product.image2) || getImageUrl(product.image3) || getImageUrl(product.image4) || 'assets/images/hero1.jpg';
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="${product.img}" alt="${product.name}" class="product-card__img">
+      <img src="${img}" alt="${product.name}" class="product-card__img">
       <div class="product-card__name">${product.name}</div>
       <div class="product-card__price">₹${product.price}</div>
-      <div class="product-card__desc">${product.shortDesc}</div>
+      <div class="product-card__desc">${product.description || ''}</div>
       <button class="product-card__button" data-id="${product.id}" data-action="details">
         <img src="assets/icons/view.svg" alt="View" style="width:20px;height:20px;vertical-align:middle;"> View Details
       </button>
@@ -100,31 +95,53 @@ function renderProducts(category) {
     `;
     grid.appendChild(card);
   });
+  showProductsLoading(false);
 }
 
-// Modal logic
+// Modal logic with image carousel
 function showProductModal(product) {
   const modal = document.querySelector('.product-modal');
   const content = modal.querySelector('.product-modal__content');
-  content.innerHTML = `
-    <img src="${product.img}" alt="${product.name}" class="product-modal__img">
-    <div class="product-modal__name">${product.name}</div>
-    <div class="product-modal__desc">${product.fullDesc}</div>
-    <div class="product-modal__delivery">Estimated Delivery: ${product.delivery}</div>
-    <div class="product-modal__actions">
-      <button class="product-modal__button" data-id="${product.id}" data-action="add">
-        <img src="assets/icons/cart.svg" alt="Add to Cart" style="width:20px;height:20px;vertical-align:middle;"> Add to Cart
-      </button>
-      <button class="product-modal__button" data-action="close">
-        <img src="assets/icons/view.svg" alt="Close" style="width:20px;height:20px;vertical-align:middle;"> Close
-      </button>
-    </div>
-  `;
+  // Collect all available images
+  const images = [product.image1, product.image2, product.image3, product.image4].filter(Boolean).map(getImageUrl);
+  let currentIndex = 0;
+
+  function renderCarousel() {
+    content.innerHTML = `
+      <div class="product-modal__carousel">
+        <button class="carousel__arrow carousel__arrow--left" ${currentIndex === 0 ? 'disabled' : ''}>&lt;</button>
+        <img src="${images[currentIndex]}" alt="${product.name}" class="product-modal__img">
+        <button class="carousel__arrow carousel__arrow--right" ${currentIndex === images.length - 1 ? 'disabled' : ''}>&gt;</button>
+      </div>
+      <div class="product-modal__name">${product.name}</div>
+      <div class="product-modal__desc">${product.description || ''}</div>
+      <div class="product-modal__price">₹${product.price}</div>
+      <div class="product-modal__actions">
+        <button class="product-modal__button" data-id="${product.id}" data-action="add">
+          <img src="assets/icons/cart.svg" alt="Add to Cart" style="width:20px;height:20px;vertical-align:middle;"> Add to Cart
+        </button>
+        <button class="product-modal__button" data-action="close">
+          <img src="assets/icons/view.svg" alt="Close" style="width:20px;height:20px;vertical-align:middle;"> Close
+        </button>
+      </div>
+    `;
+    // Arrow event listeners
+    const left = content.querySelector('.carousel__arrow--left');
+    const right = content.querySelector('.carousel__arrow--right');
+    if (left) left.onclick = () => { if (currentIndex > 0) { currentIndex--; renderCarousel(); } };
+    if (right) right.onclick = () => { if (currentIndex < images.length - 1) { currentIndex++; renderCarousel(); } };
+    // Close logic
+    const closeBtn = content.querySelector('[data-action="close"]');
+    if (closeBtn) closeBtn.onclick = () => modal.classList.remove('product-modal--active');
+    // Add to cart logic
+    const addBtn = content.querySelector('[data-action="add"]');
+    if (addBtn) addBtn.onclick = () => { addToCart(product.id); };
+  }
+
+  renderCarousel();
   modal.classList.add('product-modal--active');
-  // Close logic
-  const closeBtn = modal.querySelector('[data-action="close"]');
-  if (closeBtn) closeBtn.onclick = () => modal.classList.remove('product-modal--active');
 }
+
 function hideProductModal() {
   document.querySelector('.product-modal').classList.remove('product-modal--active');
 }
@@ -151,10 +168,11 @@ function addToCart(productId) {
 // Event delegation for product actions
 function setupProductActions() {
   document.querySelector('.products').addEventListener('click', e => {
-    if (e.target.classList.contains('product-card__button')) {
-      const id = e.target.getAttribute('data-id');
-      const action = e.target.getAttribute('data-action');
-      const product = PRODUCTS.find(p => p.id === id);
+    const btn = e.target.closest('.product-card__button');
+    if (btn) {
+      const id = btn.getAttribute('data-id');
+      const action = btn.getAttribute('data-action');
+      const product = PRODUCTS.find(p => p.id == id);
       if (action === 'details') {
         showProductModal(product);
       } else if (action === 'add') {
@@ -195,16 +213,13 @@ function setupProductModalClose() {
 }
 
 // On DOMContentLoaded
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   setActiveNav();
-  renderCategories();
-  renderProducts();
+  await renderCategories();
+  await renderProducts();
   setupProductActions();
   setupModalBackground();
   setupProductModalClose();
-  // Activate first category by default
-  const firstCat = document.querySelector('.filter__category');
-  if (firstCat) firstCat.classList.add('filter__category--active');
 });
 
 // Expose for debugging
