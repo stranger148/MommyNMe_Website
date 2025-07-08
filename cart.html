@@ -8,20 +8,19 @@
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
-<body class="cart-page">
-  <!-- Navbar -->
+<body>
+  <!-- Navbar (copied from index.html) -->
   <nav class="navbar">
-    <a href="index.html" class="navbar__logo-link"><img src="assets/logo.png" alt="MommynMe Logo" class="navbar__logo"></a>
+    <a href="index.html" class="navbar__logo-link"><img src="assets/icons/logo.jpeg" alt="MommynMe Logo" class="navbar__logo"></a>
     <div class="navbar__links">
       <a href="index.html" class="navbar__link">Home</a>
       <a href="products.html" class="navbar__link">Products</a>
-      <a href="index.html#about" class="navbar__link">About Us</a>
-      <a href="index.html#contact" class="navbar__link">Contact Us</a>
-      <a href="cart.html" class="navbar__cart"><img src="assets/icons/cart.svg" alt="Cart" class="navbar__cart-icon"></a>
+      <a href="#about" class="navbar__link">About Us</a>
+      <a href="#contact" class="navbar__link">Contact Us</a>
+      <a href="cart.html" class="navbar__cart"><img src="assets/icons/cart.png" alt="Cart" class="navbar__cart-icon"></a>
     </div>
   </nav>
-
-  <!-- Hero Banner -->
+  <!-- Hero Cover for Cart Page -->
   <section class="cart-hero">
     <div class="cart-hero__bg"></div>
     <div class="cart-hero__overlay"></div>
@@ -30,31 +29,14 @@
       <p class="cart-hero__tagline">Review your selected items and proceed to checkout.</p>
     </div>
   </section>
-
-  <!-- Section Title & Tagline -->
-  <div class="cart-section-header">
-    <h2 class="cart-section-title">Cart Items</h2>
-    <p class="cart-section-tagline">Your handcrafted crochet items are waiting for you.</p>
-  </div>
-
-  <!-- Cart Section -->
-  <section class="cart">
-    <div class="cart__title">Your Cart</div>
-    <table class="cart__list"></table>
-    <div class="cart__empty" style="display:none;">Your cart is empty.</div>
-    <div class="cart__total"></div>
-    <div class="cart__actions">
-      <button class="cart__action-btn cart__checkout-btn">Proceed to Checkout</button>
-      <button class="cart__action-btn cart__browse-btn">Browse More Products</button>
+  <main class="cart-main">
+    <h1 class="cart-title" style="display:none;">Your Cart</h1>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-checkout-container">
+      <button class="cart-checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
     </div>
-  </section>
-
-  <!-- Loading Spinner -->
-  <div class="cart-loading" style="display:none;">
-    <div class="spinner"></div>
-  </div>
-
-  <!-- Footer -->
+  </main>
+  <!-- Footer (copied from index.html) -->
   <footer class="footer">
     <div class="footer__container">
       <div class="footer__brand">
@@ -99,7 +81,6 @@
       <span>&copy; 2024 MommynMe. All rights reserved.</span>
     </div>
   </footer>
-
   <script src="js/cart.js"></script>
 </body>
 </html> 
