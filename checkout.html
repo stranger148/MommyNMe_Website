@@ -4,86 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MommynMe Crochet | Checkout</title>
-  <link rel="stylesheet" href="css/checkout.css">
+  <link rel="stylesheet" href="css/cart.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
-<body class="checkout-page">
-  <!-- Navbar -->
+<body>
   <nav class="navbar">
-    <a href="index.html" class="navbar__logo-link"><img src="assets/logo.png" alt="MommynMe Logo" class="navbar__logo"></a>
+    <a href="index.html" class="navbar__logo-link"><img src="assets/icons/logo.jpeg" alt="MommynMe Logo" class="navbar__logo"></a>
     <div class="navbar__links">
       <a href="index.html" class="navbar__link">Home</a>
       <a href="products.html" class="navbar__link">Products</a>
-      <a href="index.html#about" class="navbar__link">About Us</a>
-      <a href="index.html#contact" class="navbar__link">Contact Us</a>
-      <a href="cart.html" class="navbar__cart"><img src="assets/icons/cart.svg" alt="Cart" class="navbar__cart-icon"></a>
+      <a href="#about" class="navbar__link">About Us</a>
+      <a href="#contact" class="navbar__link">Contact Us</a>
+      <a href="cart.html" class="navbar__cart"><img src="assets/icons/cart.png" alt="Cart" class="navbar__cart-icon"></a>
     </div>
   </nav>
-
-  <!-- Hero Banner -->
-  <section class="checkout-hero">
-    <div class="checkout-hero__bg"></div>
-    <div class="checkout-hero__overlay"></div>
-    <div class="checkout-hero__content">
-      <h1 class="checkout-hero__title">Checkout</h1>
-      <p class="checkout-hero__tagline">Complete your order and enjoy your handcrafted crochet items!</p>
+  <section class="cart-hero">
+    <div class="cart-hero__bg"></div>
+    <div class="cart-hero__overlay"></div>
+    <div class="cart-hero__content">
+      <h1 class="cart-hero__title">Checkout</h1>
+      <p class="cart-hero__tagline">Complete your order and enjoy your handmade crochet items!</p>
     </div>
   </section>
-
-  <!-- Section Title & Tagline -->
-  <div class="checkout-section-header">
-    <h2 class="checkout-section-title">Order Summary & Details</h2>
-    <p class="checkout-section-tagline">Fill in your details and choose your payment method to place your order.</p>
-  </div>
-
-  <!-- Checkout Section -->
-  <section class="checkout">
-    <div class="checkout__title">Checkout</div>
-    <div class="checkout__summary">
-      <table class="checkout__list"></table>
-      <div class="checkout__empty" style="display:none;">Your cart is empty.</div>
-      <div class="checkout__total"></div>
-    </div>
-    <form class="checkout__form">
-      <div class="checkout__form-title">Your Details</div>
-      <div class="checkout__input-group">
-        <span class="checkout__icon"><img src="assets/icons/user.svg" alt="Name"></span>
-        <input type="text" name="name" class="checkout__input" placeholder="Full Name" required>
+  <main class="checkout-main">
+    <h2 class="cart-title">Order Summary</h2>
+    <div class="cart-items" id="checkoutCartItems"></div>
+    <form class="checkout-form" id="checkoutForm" autocomplete="off">
+      <h2 class="cart-title">Your Details</h2>
+      <div class="form-group">
+        <label for="customerName">Name</label>
+        <input type="text" id="customerName" required maxlength="100">
       </div>
-      <div class="checkout__input-group">
-        <span class="checkout__icon"><img src="assets/icons/address.svg" alt="Address"></span>
-        <input type="text" name="address" class="checkout__input" placeholder="Address" required>
+      <div class="form-group">
+        <label for="customerPhone">Phone</label>
+        <input type="tel" id="customerPhone" required maxlength="20">
       </div>
-      <div class="checkout__input-group">
-        <span class="checkout__icon"><img src="assets/icons/phone.svg" alt="Phone"></span>
-        <input type="tel" name="phone" class="checkout__input" placeholder="Phone (10 digits)" required pattern="\d{10}">
+      <div class="form-group">
+        <label for="customerEmail">Email</label>
+        <input type="email" id="customerEmail" required maxlength="100">
       </div>
-      <div class="checkout__input-group">
-        <span class="checkout__icon"><img src="assets/icons/email.svg" alt="Email"></span>
-        <input type="email" name="email" class="checkout__input" placeholder="Email" required>
+      <div class="form-group">
+        <label for="customerAddress">Address</label>
+        <textarea id="customerAddress" required maxlength="255"></textarea>
       </div>
-      <div class="checkout__payment">
-        <span class="checkout__payment-label">Payment Method:</span>
-        <label class="checkout__payment-option"><input type="radio" name="payment" value="UPI"><img src="assets/icons/upi.svg" alt="UPI" class="checkout__payment-icon"> UPI</label>
-        <label class="checkout__payment-option"><input type="radio" name="payment" value="COD"><img src="assets/icons/cod.svg" alt="COD" class="checkout__payment-icon"> Cash on Delivery</label>
-        <label class="checkout__payment-option"><input type="radio" name="payment" value="Card"><img src="assets/icons/card.svg" alt="Card" class="checkout__payment-icon"> Card</label>
+      <div class="form-group">
+        <label for="paymentMode">Mode of Payment</label>
+        <select id="paymentMode" required>
+          <option value="Cash on Delivery" selected>Cash on Delivery</option>
+        </select>
       </div>
-      <button type="submit" class="checkout__order-btn"><img src="assets/icons/checkout.svg" alt="Order" style="width:20px;height:20px;vertical-align:middle;"> Order Now</button>
+      <button type="submit" class="cart-checkout-btn">Place Order</button>
     </form>
-  </section>
-
-  <!-- Loading Spinner -->
-  <div class="checkout-loading" style="display:none;">
-    <div class="spinner"></div>
-  </div>
-
-  <!-- Order Success Modal -->
-  <div class="order-modal">
-    <div class="order-modal__content"></div>
-  </div>
-
-  <!-- Footer -->
+    <div id="checkoutSuccess" class="checkout-success" style="display:none;">
+      <h2>Thank you for your order!</h2>
+      <p>Your order has been placed successfully. We will contact you soon.<br>Your bill will be sent to the email address you provided.</p>
+    </div>
+  </main>
   <footer class="footer">
     <div class="footer__container">
       <div class="footer__brand">
@@ -128,7 +105,6 @@
       <span>&copy; 2024 MommynMe. All rights reserved.</span>
     </div>
   </footer>
-
   <script src="js/checkout.js"></script>
 </body>
 </html> 

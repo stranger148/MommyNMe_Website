@@ -1,14 +1,4 @@
-// MommynMe - checkout.js
-
-// Load products from products.js if available
-let PRODUCTS = window._MommynMe ? window._MommynMe.PRODUCTS : [];
-if (!PRODUCTS.length) {
-  PRODUCTS = [
-    { id: 'hero-doll', name: 'Super Hero Doll', price: 499, img: 'assets/products/hero-doll.jpg' },
-    { id: 'flower-bouquet', name: 'Flower Bouquet', price: 699, img: 'assets/products/flower-bouquet.jpg' },
-    { id: 'mini-claw', name: 'Mini Claw', price: 199, img: 'assets/products/mini-claw.jpg' },
-  ];
-}
+// checkout.js
 
 function getCart() {
   return JSON.parse(localStorage.getItem('cart') || '[]');
@@ -16,145 +6,76 @@ function getCart() {
 function setCart(cart) {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
-
-function renderSummary() {
-  const cart = getCart();
-  const table = document.querySelector('.checkout__list');
-  const totalDiv = document.querySelector('.checkout__total');
-  if (!cart.length) {
-    table.innerHTML = '';
-    totalDiv.textContent = '';
-    document.querySelector('.checkout__empty').style.display = 'block';
-    document.querySelector('.checkout__form').style.display = 'none';
+function renderCheckoutCart() {
+  const container = document.getElementById('checkoutCartItems');
+  container.innerHTML = '';
+  const items = getCart();
+  if (!items.length) {
+    container.innerHTML = '<div class="cart-empty">Your cart is empty.</div>';
     return;
   }
-  document.querySelector('.checkout__empty').style.display = 'none';
-  document.querySelector('.checkout__form').style.display = 'block';
   let total = 0;
-  table.innerHTML = `
-    <tr>
-      <th>Image</th>
-      <th>Name</th>
-      <th>Quantity</th>
-      <th>Price</th>
-    </tr>
-  `;
-  cart.forEach(item => {
-    const product = PRODUCTS.find(p => p.id === item.id);
-    if (!product) return;
-    total += product.price * item.qty;
-    table.innerHTML += `
-      <tr>
-        <td><img src="${product.img}" alt="${product.name}" class="checkout__img"></td>
-        <td>${product.name}</td>
-        <td>${item.qty}</td>
-        <td>₹${product.price * item.qty}</td>
-      </tr>
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <img src="${getImageUrl(item.image1)}" alt="${item.product_name}" class="cart-item__img">
+      <div class="cart-item__info">
+        <div class="cart-item__name">${item.product_name}</div>
+        <div class="cart-item__desc">${item.description || ''}</div>
+        <div class="cart-item__price">₹${item.price || ''}</div>
+        <div class="cart-item__qty"><span class="cart-item__qty-value">Qty: ${item.quantity}</span></div>
+      </div>
     `;
+    container.appendChild(div);
+    total += (parseFloat(item.price) || 0) * (item.quantity || 1);
   });
-  totalDiv.textContent = `Total: ₹${total}`;
+  const totalDiv = document.createElement('div');
+  totalDiv.className = 'cart-total';
+  totalDiv.innerHTML = `<strong>Total: </strong>₹${total.toFixed(2)}`;
+  container.appendChild(totalDiv);
 }
-
-function validateForm(form) {
-  let valid = true;
-  ['name','address','phone','email'].forEach(field => {
-    const input = form.querySelector(`[name="${field}"]`);
-    input.classList.remove('input--error');
-    if (!input.value.trim()) {
-      input.classList.add('input--error');
-      valid = false;
-    }
-  });
-  const email = form.querySelector('[name="email"]');
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value)) {
-    email.classList.add('input--error');
-    valid = false;
+function getImageUrl(path) {
+  if (!path) return 'assets/images/hero1.jpg';
+  if (path.startsWith('/static/')) {
+    return 'http://localhost:5000' + path;
   }
-  const phone = form.querySelector('[name="phone"]');
-  if (!/^\d{10}$/.test(phone.value)) {
-    phone.classList.add('input--error');
-    valid = false;
-  }
-  return valid;
+  return path;
 }
-
-function setupCheckoutForm() {
-  const form = document.querySelector('.checkout__form');
-  if (!form) return;
-  form.addEventListener('submit', function(e) {
+document.addEventListener('DOMContentLoaded', () => {
+  renderCheckoutCart();
+  const form = document.getElementById('checkoutForm');
+  form.onsubmit = async function(e) {
     e.preventDefault();
-    if (!validateForm(form)) return;
-    // Payment method
-    const payment = form.querySelector('[name="payment"]:checked');
-    if (!payment) {
-      alert('Please select a payment method.');
+    const customer_name = document.getElementById('customerName').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+    const email = document.getElementById('customerEmail').value.trim();
+    const address = document.getElementById('customerAddress').value.trim();
+    const payment_mode = document.getElementById('paymentMode').value;
+    const products = getCart();
+    if (!products.length) {
+      alert('Your cart is empty.');
       return;
     }
-    // Generate order ID
-    const orderId = 'MM' + Math.floor(100000 + Math.random() * 900000);
-    showOrderModal(orderId);
-    setCart([]);
-    renderSummary();
-    form.reset();
-  });
-}
-
-// Show loading spinner while checkout loads
-function showCheckoutLoading(show) {
-  const spinner = document.querySelector('.checkout-loading');
-  if (spinner) spinner.style.display = show ? 'flex' : 'none';
-}
-
-// Wrap renderCheckout to show spinner
-if (typeof renderCheckout === 'function') {
-  const _renderCheckout = renderCheckout;
-  renderCheckout = function() {
-    showCheckoutLoading(true);
-    setTimeout(() => {
-      _renderCheckout();
-      showCheckoutLoading(false);
-    }, 400); // Simulate loading
-  };
-}
-
-// Modernize order modal content
-function showOrderModal(successMsg) {
-  const modal = document.querySelector('.order-modal');
-  const content = modal.querySelector('.order-modal__content');
-  content.innerHTML = `
-    <div style="margin-bottom:1.2rem;">
-      <img src="assets/icons/check.svg" alt="Success" style="width:48px;height:48px;">
-    </div>
-    <div style="font-size:1.3rem;font-weight:700;color:var(--accent);margin-bottom:0.7rem;">Order Placed!</div>
-    <div style="font-size:1.05rem;color:#64748b;margin-bottom:1.2rem;">${successMsg || 'Thank you for your purchase! We will contact you soon.'}</div>
-    <button class="checkout__order-btn" onclick="document.querySelector('.order-modal').classList.remove('order-modal--active')">
-      <img src="assets/icons/shop.svg" alt="Shop" style="width:20px;height:20px;vertical-align:middle;"> Continue Shopping
-    </button>
-  `;
-  modal.classList.add('order-modal--active');
-}
-
-function hideOrderModal() {
-  document.querySelector('.order-modal').classList.remove('order-modal--active');
-}
-
-function setActiveNav() {
-  const links = document.querySelectorAll('.navbar__link');
-  const path = window.location.pathname;
-  links.forEach(link => {
-    if (link.getAttribute('href') === path) {
-      link.classList.add('navbar__link--active');
+    const res = await fetch('http://localhost:5000/orders/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_name,
+        phone,
+        email,
+        address,
+        payment_mode,
+        products
+      })
+    });
+    if (res.ok) {
+      setCart([]);
+      document.getElementById('checkoutForm').style.display = 'none';
+      document.getElementById('checkoutCartItems').style.display = 'none';
+      document.getElementById('checkoutSuccess').style.display = 'block';
+    } else {
+      alert('Failed to place order. Please try again.');
     }
-  });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  setActiveNav();
-  renderSummary();
-  setupCheckoutForm();
-  // Add icons to order button if not already present
-  const orderBtn = document.querySelector('.checkout__order-btn');
-  if (orderBtn && !orderBtn.innerHTML.includes('img')) {
-    orderBtn.innerHTML = '<img src="assets/icons/checkout.svg" alt="Order" style="width:20px;height:20px;vertical-align:middle;"> Order Now';
-  }
+  };
 }); 

@@ -92,4 +92,10 @@ function cleanCart() {
 document.addEventListener('DOMContentLoaded', () => {
   cleanCart();
   loadCart();
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  if (checkoutBtn) {
+    checkoutBtn.onclick = function() {
+      window.location.href = 'checkout.html';
+    };
+  }
 }); 
