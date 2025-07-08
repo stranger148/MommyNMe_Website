@@ -42,32 +42,7 @@
   <section class="categories" id="categories">
     <h2 class="about__title" style="text-align:center;">Explore Our Crochet Categories</h2>
     <h3 class="section-tagline">Find the perfect handmade piece for every mood and moment</h3>
-    <div class="category-card">
-      <img src="assets/images/hero1.jpg" alt="Super Heroes" class="category-card__icon">
-      <div class="category-card__name">Super Heroes</div>
-      <div class="category-card__tagline">For the little heroes in your life</div>
-    </div>
-    <div class="category-card">
-      <img src="assets/icons/poster.svg" alt="Posters" class="category-card__icon">
-      <div class="category-card__name">Posters</div>
-      <div class="category-card__tagline">Art for your walls, handmade with love</div>
-    </div>
-    <div class="category-card">
-      <img src="assets/icons/claw.svg" alt="Mini Claw" class="category-card__icon">
-      <div class="category-card__name">Mini Claw</div>
-      <div class="category-card__tagline">Cute, colorful, and always handy</div>
-    </div>
-    <div class="category-card">
-      <img src="assets/icons/keychain.svg" alt="Keychain" class="category-card__icon">
-      <div class="category-card__name">Keychain</div>
-      <div class="category-card__tagline">Carry a touch of crochet everywhere</div>
-    </div>
-    <div class="category-card">
-      <img src="assets/icons/flower.svg" alt="Flower Bouquets" class="category-card__icon">
-      <div class="category-card__name">Flower Bouquets</div>
-      <div class="category-card__tagline">Blooms that last forever</div>
-    </div>
-    <!-- Add more categories as needed -->
+    <div class="categories-list" id="categoriesList"></div>
   </section>
 
   <!-- About Us -->
@@ -221,8 +196,27 @@
         container.appendChild(div);
       });
     }
+    async function loadCategories() {
+      const res = await fetch('http://localhost:5000/category/categories');
+      if (!res.ok) return;
+      const categories = await res.json();
+      const container = document.getElementById('categoriesList');
+      container.innerHTML = '';
+      categories.forEach(cat => {
+        const a = document.createElement('a');
+        a.className = 'category-card';
+        a.href = 'products.html';
+        a.innerHTML = `
+          <div class="category-card__icon"><img src="assets/icons/logo.jpeg" alt="Category"></div>
+          <div class="category-card__name">${cat.name}</div>
+          <div class="category-card__tagline">${cat.description || ''}</div>
+        `;
+        container.appendChild(a);
+      });
+    }
     document.addEventListener('DOMContentLoaded', function() {
       loadReviews();
+      loadCategories();
     });
   </script>
 </body>
