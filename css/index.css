@@ -177,15 +177,18 @@ body {
   text-align: left;
 }
 .hero__title {
+  color: #fff;
   font-size: 2.8rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--accent);
+  font-weight: 800;
+  margin-bottom: 0.7rem;
+  text-shadow: 0 2px 16px rgba(37,99,235,0.13), 0 1px 2px rgba(0,0,0,0.10);
 }
 .hero__subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 2rem;
-  color: var(--text);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 2.2rem;
+  text-shadow: 0 1px 8px rgba(37,99,235,0.10), 0 1px 2px rgba(0,0,0,0.10);
 }
 .hero__buttons {
   display: flex;
@@ -193,21 +196,24 @@ body {
   flex-wrap: wrap;
   justify-content: center;
 }
-.button {
-  background: var(--button);
-  color: #fff;
+.hero__buttons .button,
+.hero__button {
+  background: #fff;
+  color: #2563eb;
   border: none;
-  border-radius: 30px;
-  padding: 0.8rem 2.2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(229,152,155,0.08);
-  transition: background 0.2s, transform 0.2s;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 1.08rem;
+  padding: 0.7rem 2.2rem;
+  margin: 0 0.5rem;
+  box-shadow: 0 2px 12px rgba(37,99,235,0.10);
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
 }
-.button:hover {
-  background: var(--accent);
-  transform: translateY(-2px) scale(1.04);
+.hero__buttons .button:hover,
+.hero__button:hover {
+  background: #2563eb;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(37,99,235,0.18);
 }
 
 /* Modern glassmorphism category cards */
