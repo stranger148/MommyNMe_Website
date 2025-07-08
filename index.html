@@ -177,5 +177,29 @@
   </footer>
 
   <script src="js/index.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.querySelector('.contact__form');
+      if (contactForm) {
+        contactForm.onsubmit = async function(e) {
+          e.preventDefault();
+          const name = this.name.value.trim();
+          const email = this.email.value.trim();
+          const message = this.message.value.trim();
+          const res = await fetch('http://localhost:5000/contact/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message })
+          });
+          if (res.ok) {
+            alert('Thank you for contacting us!');
+            this.reset();
+          } else {
+            alert('Failed to send message. Please try again.');
+          }
+        };
+      }
+    });
+  </script>
 </body>
 </html> 
