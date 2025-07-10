@@ -500,3 +500,37 @@
     text-shadow: none;
   }
 }
+
+/* Follow Us on Social Media Section Responsive */
+@media (max-width: 900px) {
+  .follow-social__content {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .follow-social__phones {
+    flex-direction: row;
+    gap: 16px;
+  }
+}
+@media (max-width: 600px) {
+  .phone-mockup {
+    width: 140px;
+    height: 260px;
+  }
+  .phone-screen {
+    width: 124px;
+    height: 240px;
+  }
+  .follow-social__icons {
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .social-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .social-icon img {
+    width: 20px;
+    height: 20px;
+  }
+}
