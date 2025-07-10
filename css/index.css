@@ -1227,23 +1227,53 @@ body {
 }
 @media (max-width: 900px) {
   .follow-social__phones {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: unset;
-    max-width: 100%;
-    position: static;
-    gap: 32px;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 24px !important;
+    margin: 0 0 32px 0 !important;
+    overflow-x: hidden !important;
   }
   .phone-mockup {
-    position: static;
-    left: unset;
-    transform: none !important;
-    margin: 0 auto;
-    box-shadow: 0 8px 32px 0 #2563eb55, 0 2px 8px 0 #0008;
-    z-index: 1;
-    width: 220px;
-    height: 440px;
+    width: 100% !important;
+    max-width: 320px !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+}
+@media (max-width: 600px) {
+  .follow-social__phones {
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .phone-mockup {
+    width: 120px;
+    height: 240px;
+    border-radius: 18px;
+  }
+  .phone-screen {
+    width: 104px;
+    height: 216px;
+    border-radius: 12px;
+  }
+  .follow-social__icons {
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .social-icon img {
+    width: 22px;
+    height: 22px;
+  }
+  .follow-social__content {
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
